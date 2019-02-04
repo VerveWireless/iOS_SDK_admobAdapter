@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <verveSDK/VRVBannerAdView.h>
 @import GoogleMobileAds;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface VRVAdMobBannerAdapter : NSObject <GADCustomEventBanner>
+@interface VRVAdMobBannerAdapter : NSObject <GADCustomEventBanner, VRVBannerAdDelegate>
 
 @end
 

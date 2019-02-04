@@ -11,7 +11,7 @@
 @implementation VRVAdMobInterstitialAdapter
 @synthesize delegate;
 
--(void)requestInterstitialAdWithParameter:(NSString *)serverParameter label:(NSString *)serverLabel request:(GADCustomEventRequest *)request {
+- (void)requestInterstitialAdWithParameter:(NSString *)serverParameter label:(NSString *)serverLabel request:(GADCustomEventRequest *)request {
     
 }
 

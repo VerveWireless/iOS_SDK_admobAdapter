@@ -7,11 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <verveSDK/VRVRewardedAd.h>
 @import GoogleMobileAds;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface VRVAdMobRewardedAdapter : NSObject <GADMRewardBasedVideoAdNetworkAdapter>
+
+- (void)rewardedAdClosedForZone:(nonnull NSString *)zone;
+- (void)rewardedAdFailedForZone:(nonnull NSString *)zone;
+- (void)rewardedAdReadyForZone:(nonnull NSString *)zone;
+- (void)rewardedAdRewardedForZone:(nonnull NSString *)zone;
 
 @end
 
