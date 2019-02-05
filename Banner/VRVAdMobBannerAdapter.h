@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <verveSDK/VRVBannerAdView.h>
-@import GoogleMobileAds;
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

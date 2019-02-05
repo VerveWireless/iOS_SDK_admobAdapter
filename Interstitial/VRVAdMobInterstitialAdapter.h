@@ -7,11 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-@import GoogleMobileAds;
+#import <verveSDK/VRVInterstitialAd.h>
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface VRVAdMobInterstitialAdapter : NSObject <GADCustomEventInterstitial>
+
+- (void)interstitialAdClosedForZone:(nonnull NSString *)zone;
+- (void)interstitialAdFailedForZone:(nonnull NSString *)zone;
+- (void)interstitialAdReadyForZone:(nonnull NSString *)zone;
 
 @end
 

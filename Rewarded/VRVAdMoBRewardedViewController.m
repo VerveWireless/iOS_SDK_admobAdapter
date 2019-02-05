@@ -25,27 +25,22 @@
     return self;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-}
-
 - (void)onRewardedAdClosedForZone:(nonnull NSString *)zone {
-    [self.adapter rewardedAdClosedForZone:zone];
+    if (self.adapter) [self.adapter rewardedAdClosedForZone:zone];
     [self removeFromParentViewController];
 }
 
 - (void)onRewardedAdFailedForZone:(nonnull NSString *)zone {
-    [self.adapter rewardedAdFailedForZone:zone];
+    if (self.adapter) [self.adapter rewardedAdFailedForZone:zone];
     [self removeFromParentViewController];
 }
 
 - (void)onRewardedAdReadyForZone:(nonnull NSString *)zone {
-    [self.adapter rewardedAdReadyForZone:zone];
+    if (self.adapter) [self.adapter rewardedAdReadyForZone:zone];
 }
 
 - (void)onRewardedAdRewardedForZone:(nonnull NSString *)zone {
-    [self.adapter rewardedAdRewardedForZone:zone];
+    if (self.adapter) [self.adapter rewardedAdRewardedForZone:zone];
 }
 
 @end
