@@ -8,6 +8,7 @@
 
 #import "VRVAdMobInterstitialAdapter.h"
 #import "VRVAdMobInterstitialViewController.h"
+#import "VRVAdapterHelper.h"
 
 @interface VRVAdMobInterstitialAdapter ()
 
@@ -22,16 +23,23 @@
 
 - (void)requestInterstitialAdWithParameter:(NSString *)serverParameter label:(NSString *)serverLabel request:(GADCustomEventRequest *)request {
     if (!serverParameter) {
-        NSString *noZone =  @"Zone needs to be set as the Parameter for this Ad request";
-        [self.delegate customEventInterstitial:self didFailAd:[self createErrorForReason:noZone]];
+        NSString *noZone = @"Zone and App ID needs to be set as the Parameter for this Ad request";
+        [self.delegate customEventInterstitial:self didFailAd:[VRVAdapterHelper createErrorForReason:noZone]];
         return;
     }
     
     self.adViewController = [[VRVAdMobInterstitialViewController alloc] initWithAdapter:self];
     self.adLoaded = NO;
-    self.zone = serverParameter;
-    [VRVInterstitialAd setInterstitialAdDelegate:self.adViewController];
-    [VRVInterstitialAd loadInterstitialAdForZone:self.zone];
+    
+    NSDictionary *params = [VRVAdapterHelper createInitValuesFromServerParameter:serverParameter];
+    if (params) {
+        self.zone = params[@"zone"];
+        [VRVInterstitialAd setInterstitialAdDelegate:self.adViewController appID:params[@"appID"]];
+        [VRVInterstitialAd loadInterstitialAdForZone:self.zone];
+    } else {
+        NSString *paramError = @"Could not retrieve server parameters";
+        [self.delegate customEventInterstitial:self didFailAd:[VRVAdapterHelper createErrorForReason:paramError]];
+    }
 }
 
 - (void)presentFromRootViewController:(nonnull UIViewController *)rootViewController {
@@ -54,7 +62,7 @@
 
 - (void)interstitialAdFailedForZone:(nonnull NSString *)zone {
     if ([self.zone isEqualToString:zone]) {
-        [self.delegate customEventInterstitial:self didFailAd:[self createErrorForReason:@"Ad Load Failed"]];
+        [self.delegate customEventInterstitial:self didFailAd:[VRVAdapterHelper createErrorForReason:@"Ad Load Failed"]];
     }
 }
 
@@ -63,11 +71,6 @@
         [self.delegate customEventInterstitialDidReceiveAd:self];
         self.adLoaded = YES;
     }
-}
-
-- (NSError *)createErrorForReason:(NSString *)errorDescription {
-    NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : errorDescription };
-    return [NSError errorWithDomain:NSCocoaErrorDomain code:1 userInfo:userInfo];
 }
 
 @end

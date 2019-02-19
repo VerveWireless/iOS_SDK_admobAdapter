@@ -60,7 +60,7 @@
     }
     
     [self.rewardBasedVideoAdConnector adapterDidSetUpRewardBasedVideoAd:self];
-    [VRVRewardedAd setRewardedAdDelegate:self.adViewController];
+    [VRVRewardedAd setRewardedAdDelegate:self.adViewController appID:self.appId];
 }
 
 - (void)requestRewardBasedVideoAd {

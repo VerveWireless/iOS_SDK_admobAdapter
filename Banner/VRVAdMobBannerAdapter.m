@@ -7,6 +7,7 @@
 //
 
 #import "VRVAdMobBannerAdapter.h"
+#import "VRVAdapterHelper.h"
 
 @interface VRVAdMobBannerAdapter ()
 
@@ -20,19 +21,26 @@
 
 - (void)requestBannerAd:(GADAdSize)adSize parameter:(nullable NSString *)serverParameter label:(nullable NSString *)serverLabel request:(nonnull GADCustomEventRequest *)request {
     if (!serverParameter) {
-        NSString *noZone =  @"Zone needs to be set as the Parameter for this Ad request";
-        [self.delegate customEventBanner:self didFailAd:[self createErrorForReason:noZone]];
+        NSString *noZone =  @"Zone and App ID needs to be set as the Parameter for this Ad request";
+        [self.delegate customEventBanner:self didFailAd:[VRVAdapterHelper createErrorForReason:noZone]];
         return;
     }
     
-    VRVBannerAdSize bannerAdSize = [self mapVRVBannerSizeToGADBannerSize:adSize];
-    if (bannerAdSize != VRVBannerSizeNone) {
-        self.bannerAd = [[VRVBannerAdView alloc] initWithDelegate:self bannerSize:bannerAdSize andRootVC:[UIViewController new]];
-        [self.bannerAd loadAdForZone:serverParameter];
+    NSDictionary *serverParams = [VRVAdapterHelper createInitValuesFromServerParameter:serverParameter];
+    if (serverParams) {
+        VRVBannerAdSize bannerAdSize = [self mapVRVBannerSizeToGADBannerSize:adSize];
+        if (bannerAdSize != VRVBannerSizeNone) {
+            self.bannerAd = [[VRVBannerAdView alloc] initWithDelegate:self appID:serverParams[@"appID"] bannerSize:bannerAdSize andRootVC:[UIViewController new]];
+            [self.bannerAd loadAdForZone:serverParams[@"zone"]];
+        } else {
+            NSString *badSize = @"The specificied size for this banner is not supported by the Verve SDK";
+            [self.delegate customEventBanner:self didFailAd:[VRVAdapterHelper createErrorForReason:badSize]];
+        }
     } else {
-        NSString *badSize = @"The specificied size for this banner is not supported by the Verve SDK";
-        [self.delegate customEventBanner:self didFailAd:[self createErrorForReason:badSize]];
+        NSString *paramError = @"Could not retrieve server parameters";
+        [self.delegate customEventBanner:self didFailAd:[VRVAdapterHelper createErrorForReason:paramError]];
     }
+    
 }
 
 - (VRVBannerAdSize)mapVRVBannerSizeToGADBannerSize:(GADAdSize)size {
@@ -56,18 +64,13 @@
 
 - (void)onBannerAd:(nonnull VRVBannerAdView *)bannerAd failedForZone:(nonnull NSString *)zone {
     NSString *adFailed = @"Ad Failed";
-    [self.delegate customEventBanner:self didFailAd:[self createErrorForReason:adFailed]];
+    [self.delegate customEventBanner:self didFailAd:[VRVAdapterHelper createErrorForReason:adFailed]];
 }
 
 - (void)onBannerAd:(nonnull VRVBannerAdView *)bannerAd readyForZone:(nonnull NSString *)zone {
     if ([bannerAd isEqual:self.bannerAd]) {
         [self.delegate customEventBanner:self didReceiveAd:self.bannerAd];
     }
-}
-
-- (NSError *)createErrorForReason:(NSString *)errorDescription {
-    NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : errorDescription };
-    return [NSError errorWithDomain:NSCocoaErrorDomain code:1 userInfo:userInfo];
 }
 
 @end
