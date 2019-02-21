@@ -31,6 +31,7 @@
         VRVBannerAdSize bannerAdSize = [self mapVRVBannerSizeToGADBannerSize:adSize];
         if (bannerAdSize != VRVBannerSizeNone) {
             self.bannerAd = [[VRVBannerAdView alloc] initWithDelegate:self appID:serverParams[@"appID"] bannerSize:bannerAdSize andRootVC:[UIViewController new]];
+            self.bannerAd.frame = CGRectMake(0, 0, adSize.size.width, adSize.size.height);
             [self.bannerAd loadAdForZone:serverParams[@"zone"]];
         } else {
             NSString *badSize = @"The specificied size for this banner is not supported by the Verve SDK";
@@ -40,7 +41,6 @@
         NSString *paramError = @"Could not retrieve server parameters";
         [self.delegate customEventBanner:self didFailAd:[VRVAdapterHelper createErrorForReason:paramError]];
     }
-    
 }
 
 - (VRVBannerAdSize)mapVRVBannerSizeToGADBannerSize:(GADAdSize)size {
