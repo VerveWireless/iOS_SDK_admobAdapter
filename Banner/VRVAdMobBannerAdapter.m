@@ -40,7 +40,6 @@
         NSString *paramError = @"Could not retrieve server parameters";
         [self.delegate customEventBanner:self didFailAd:[VRVAdapterHelper createErrorForReason:paramError]];
     }
-    
 }
 
 - (VRVBannerAdSize)mapVRVBannerSizeToGADBannerSize:(GADAdSize)size {

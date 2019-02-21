@@ -42,7 +42,7 @@
 }
 
 - (void)setUp {
-    NSString *paramString = [self.rewardBasedVideoAdConnector.credentials objectForKey:GADCustomEventParametersServer];
+    NSString *paramString = [self.rewardBasedVideoAdConnector.credentials objectForKey:@"TBD"];//GADCustomEventParametersServer];
     NSDictionary *params = [NSJSONSerialization JSONObjectWithData:[paramString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
     if([params objectForKey:@"appID"]) {
         self.appId = params[@"appID"];
