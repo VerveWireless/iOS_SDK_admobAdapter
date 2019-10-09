@@ -7,7 +7,7 @@
 //
 
 #import "VRVAdMoBRewardedViewController.h"
-#import <verveSDK/VRVRewardedAd.h>
+#import <VerveAd/VRVRewardedAd.h>
 
 @interface VRVAdMoBRewardedViewController ()
 
